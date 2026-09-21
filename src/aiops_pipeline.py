@@ -15,15 +15,15 @@ def run_pipeline(file_path):
     data = load_data(file_path)
 
     # INTENTIONAL ASSESSMENT ISSUE #2
-    producer_topic = EventTopic("service-events")
+
 
     detector = AnomalyDetector()
-    producer = EventProducer(producer_topic)
-
+    shared_topic = EventTopic("anomaly-events")
+    producer = EventProducer(shared_topic)
+    consumer = EventConsumer(shared_topic)
+   
     # INTENTIONAL ASSESSMENT ISSUE #3
-    consumer_topic = EventTopic("anomaly-events")
-    consumer = EventConsumer(consumer_topic)
-
+  
     detected_events = []
 
     for record in data:
@@ -60,3 +60,4 @@ if __name__ == "__main__":
         print(f"Timestamp: {event['timestamp']}")
         print(f"Type: {event['type']}")
         print(f"Reasons: {', '.join(event['reasons'])}")
+        
